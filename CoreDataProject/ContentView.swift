@@ -9,8 +9,11 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        List {
+            ForEach ([2,4,6,7,8,13], id: \.self) {
+                Text("\($0) is even")
+            }
+        }
     }
 }
 
