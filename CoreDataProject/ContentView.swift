@@ -8,10 +8,26 @@
 import SwiftUI
 
 struct ContentView: View {
+    @Environment(\.managedObjectContext) var moc
+    @FetchRequest(sortDescriptors: []) var wizards: FetchedResults<Wizard>
+    
     var body: some View {
-        List {
-            ForEach ([2,4,6,7,8,13], id: \.self) {
-                Text("\($0) is even")
+        VStack {
+            List(wizards, id: \.self) { wizard in
+                Text(wizard.name ?? "Unknown")
+            }
+            
+            Button("Add") {
+                let wizard = Wizard(context: moc)
+                wizard.name = "Hermione Granger"
+            }
+            
+            Button("Save") {
+                do {
+                    try moc.save()
+                } catch {
+                    print(error.localizedDescription)
+                }
             }
         }
     }
