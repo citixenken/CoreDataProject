@@ -17,41 +17,84 @@ struct ContentView: View {
     
 //    @FetchRequest(sortDescriptors: [], predicate: NSPredicate(format: "name BEGINSWITH %@", "M")) var ships: FetchedResults<Ship>
     
-    @FetchRequest(sortDescriptors: [], predicate: NSPredicate(format: "NOT name BEGINSWITH[c] %@", "e")) var ships: FetchedResults<Ship>
+//    @FetchRequest(sortDescriptors: [], predicate: NSPredicate(format: "NOT name BEGINSWITH[c] %@", "e")) var ships: FetchedResults<Ship>
+    
+    @FetchRequest(sortDescriptors: []) var countries: FetchedResults<Country>
     
     var body: some View {
         
         VStack {
-            //list of matching singers
-//            FilteredList(filter: lastNameFilter)
-            FilteredList(filterKey: "lastName", filterValue: lastNameFilter) { (singer: Singer) in
-                Text("\(singer.wrappedFirstName) \(singer.wrappedLastName)")
+            List {
+                ForEach(countries, id: \.self) { country in
+                    Section(country.wrappedFullName) {
+                        ForEach(country.candyArray, id: \.self) { candy in
+                            Text(candy.wrappedName)
+                        }
+                    }
+                }
             }
             
-            Button("Add Examples") {
-                let salim = Singer(context: moc)
-                salim.firstName = "Salim"
-                salim.lastName = "Keita"
+            Button("Add") {
+                let candyUno = Candy(context: moc)
+                candyUno.name = "Mars"
+                candyUno.origin = Country(context: moc)
+                candyUno.origin?.shortName = "UK"
+                candyUno.origin?.fullName = "United Kingdom"
                 
-                let hugh = Singer(context: moc)
-                hugh.firstName = "Hugh"
-                hugh.lastName = "Masekela"
+                let candyDeux = Candy(context: moc)
+                candyDeux.name = "KitKat"
+                candyDeux.origin = Country(context: moc)
+                candyDeux.origin?.shortName = "UK"
+                candyDeux.origin?.fullName = "United Kingdom"
                 
-                let angelique = Singer(context: moc)
-                angelique.firstName = "Angelique"
-                angelique.lastName = "Kidjo"
+                let candyTres = Candy(context: moc)
+                candyTres.name = "Twix"
+                candyTres.origin = Country(context: moc)
+                candyTres.origin?.shortName = "UK"
+                candyTres.origin?.fullName = "United Kingdom"
+                
+                let candyQuartre = Candy(context: moc)
+                candyQuartre.name = "Toblerone"
+                candyQuartre.origin = Country(context: moc)
+                candyQuartre.origin?.shortName = "CH"
+                candyQuartre.origin?.fullName = "Switzerland"
                 
                 try? moc.save()
             }
-            
-            Button("Show K") {
-                lastNameFilter = "K"
-            }
-            
-            Button("Show M") {
-                lastNameFilter = "M"
-            }
         }
+        
+//        VStack {
+//            //list of matching singers
+////            FilteredList(filter: lastNameFilter)
+//            FilteredList(filterKey: "lastName", filterValue: lastNameFilter) { (singer: Singer) in
+//                Text("\(singer.wrappedFirstName) \(singer.wrappedLastName)")
+//            }
+//
+//            Button("Add Examples") {
+//                let salim = Singer(context: moc)
+//                salim.firstName = "Salim"
+//                salim.lastName = "Keita"
+//
+//                let hugh = Singer(context: moc)
+//                hugh.firstName = "Hugh"
+//                hugh.lastName = "Masekela"
+//
+//                let angelique = Singer(context: moc)
+//                angelique.firstName = "Angelique"
+//                angelique.lastName = "Kidjo"
+//
+//                try? moc.save()
+//            }
+//
+//            Button("Show K") {
+//                lastNameFilter = "K"
+//            }
+//
+//            Button("Show M") {
+//                lastNameFilter = "M"
+//            }
+//        }
+        
 //        VStack {
 //            List(ships, id: \.self) { ship in
 //                Text(ship.name ?? "Unknown name")
